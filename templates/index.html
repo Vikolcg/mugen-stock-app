@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mugen Stock App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+        }
+        .add-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+        }
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛒 Mugen Stock App</h1>
+    
+    <a href="/ajouter"><button class="add-btn">➕ Ajouter un produit</button></a>
+    
+    {% if stock %}
+        <table>
+            <tr>
+                <th>Désignation</th>
+                <th>Référence</th>
+                <th>Quantité</th>
+                <th>Actions</th>
+            </tr>
+            {% for ref, info in stock.items() %}
+            <tr>
+                <td>{{ info.designation }}</td>
+                <td>{{ ref }}</td>
+                <td>{{ info.quantite }}</td>
+                <td>
+                    <form method="POST" action="/ajouter_quantite/{{ ref }}" style="display:inline;">
+                        <button type="submit">➕</button>
+                    </form>
+                    <form method="POST" action="/retirer_quantite/{{ ref }}" style="display:inline;">
+                        <button type="submit">➖</button>
+                    </form>
+                    <form method="POST" action="/supprimer/{{ ref }}" style="display:inline;" onsubmit="return confirm('Supprimer ?')">
+                        <button type="submit">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>📭 Aucun produit en stock</p>
+    {% endif %}
+</body>
+</html>
